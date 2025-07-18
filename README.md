@@ -78,3 +78,90 @@ Excel: para el modelamiento inicial, gráficos y dashboards básicos.
 Power BI (opcional): para visualizaciones más dinámicas e interactivas.
 
 Python (opcional): si deseas automatizar cálculos o crear dashboards con Streamlit.
+
+
+
+📊 CASO DE INTELIGENCIA DE NEGOCIOS
+“Implementación de una Solución de Business Intelligence para la Optimización del Inventario en la Ferretería EcoFerre”
+🧩 1. Planteamiento del problema
+La ferretería EcoFerre no cuenta con herramientas analíticas para tomar decisiones basadas en datos. Su sistema de gestión de inventarios es manual y reactivo, lo que ha generado:
+
+Rotura de stock en productos de alta demanda.
+
+Sobreinventario en productos de bajo movimiento.
+
+Falta de visibilidad en la rentabilidad por producto.
+
+Decisiones empíricas sin respaldo de datos históricos ni proyecciones.
+
+🎯 2. Objetivo del proyecto de BI
+Desarrollar una solución de inteligencia de negocios (BI) que permita visualizar, analizar y optimizar el comportamiento del inventario en función del valor económico aportado por cada producto, utilizando el Modelo ABC, y complementarlo con tableros dinámicos para la toma de decisiones estratégicas.
+
+📌 3. Objetivos específicos
+Construir un modelo de clasificación ABC con base en el valor anual de consumo de los productos.
+
+Diseñar un dashboard interactivo en Power BI o Excel con indicadores clave de inventario.
+
+Proponer políticas de control de stock diferenciadas para cada categoría (A, B, C).
+
+Evaluar la rotación y proponer acciones de mejora basadas en data histórica.
+
+🔄 4. Solución de BI propuesta
+🔧 Herramienta:
+Power BI Desktop (o Excel con Power Query + segmentadores)
+
+🛠️ Componentes del sistema:
+Modelo de datos:
+
+Productos (ID, nombre, categoría)
+
+Precios unitarios
+
+Cantidades vendidas por mes o año
+
+Consumo anual
+
+Clasificación ABC
+
+Visualizaciones:
+
+Gráfico de Pareto
+
+KPI’s: stock disponible, productos en riesgo, % de categoría A
+
+Mapa de calor por rotación
+
+Tablas con filtros (por categoría, fecha, línea de productos)
+
+Alertas visuales (productos críticos)
+
+📁 Fuentes de datos:
+Archivo Excel con 20 a 30 productos simulados (puedes crecerlo).
+
+Registro mensual de ventas.
+
+Stock actual por producto.
+
+📈 5. Indicadores clave (KPI’s)
+% del valor total representado por productos A.
+
+N.º de productos sin rotación en 3 meses.
+
+Tiempo promedio de reposición.
+
+Margen estimado por categoría.
+
+% de reducción de sobrestock proyectado.
+
+🧠 6. Valor que aporta la solución
+Mejora la toma de decisiones sobre compras y reposición.
+
+Ahorra costos en almacenamiento de productos de bajo valor.
+
+Permite priorizar el seguimiento y control de productos clave.
+
+Sienta las bases para una futura automatización (reabastecimiento, predicción de demanda).
+
+🔚 7. Conclusión esperada
+La solución de inteligencia de negocios basada en el modelo ABC permitirá a EcoFerre transformar sus datos en decisiones inteligentes, reduciendo pérdidas y mejorando su eficiencia operativa mediante el uso de visualizaciones interactivas y análisis de inventario en tiempo real.
+
