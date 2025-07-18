@@ -79,7 +79,7 @@ Power BI (opcional): para visualizaciones más dinámicas e interactivas.
 
 Python (opcional): si deseas automatizar cálculos o crear dashboards con Streamlit.
 
-
+...............................................................................................
 
 📊 CASO DE INTELIGENCIA DE NEGOCIOS
 “Implementación de una Solución de Business Intelligence para la Optimización del Inventario en la Ferretería EcoFerre”
