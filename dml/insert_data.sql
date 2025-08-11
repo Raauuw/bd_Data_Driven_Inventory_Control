@@ -14,9 +14,6 @@ INSERT INTO CLIENTE (nombre_cliente, correo) VALUES
 ('Materiales del Sur', 'contacto@materialessur.pe'),
 ('AceroFácil SAC', 'ventas@acerofacil.com');
 
-SELECT
-FROM CLIENTE
-
 select*from PRODUCTO;
 
 INSERT INTO PRODUCTO (nombre_producto, precio, stock) VALUES
@@ -125,3 +122,34 @@ FROM   VENTA v
 JOIN   CLIENTE c ON c.id_cliente = v.id_cliente
 GROUP BY c.nombre_cliente
 ORDER BY num_ventas DESC;
+
+--Numero de productos por categoria ABC
+SELECT a.categoria_abc AS categoria,
+       COUNT(*)        AS num_productos
+FROM   CLASIFICACION_ABC a
+GROUP BY a.categoria_abc
+ORDER BY a.categoria_abc;
+
+--Numero de items por venta
+SELECT a.categoria_abc AS categoria,
+       COUNT(*)        AS num_productos
+FROM   CLASIFICACION_ABC a
+GROUP BY a.categoria_abc
+ORDER BY a.categoria_abc;
+
+-- Numero de ventas por cliente (mayor a menor)
+SELECT
+    c.nombre_cliente,
+    COUNT(v.id_venta) AS num_ventas
+FROM VENTA v
+JOIN CLIENTE c ON c.id_cliente = v.id_cliente
+GROUP BY c.nombre_cliente
+ORDER BY num_ventas DESC;  -- o ORDER BY 2 DESC
+
+-- Numero de productos por categoría ABC (A/B/C)
+SELECT
+    a.categoria_abc,
+    COUNT(*) AS num_productos
+FROM CLASIFICACION_ABC a
+GROUP BY a.categoria_abc
+ORDER BY num_productos DESC;
