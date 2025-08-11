@@ -68,3 +68,23 @@ GO --Fin del primer lote
 CREATE INDEX IX_INVENTARIO_id_producto ON INVENTARIO(id_producto);
 GO--Fin del segundo lote
 EXEC sp_help INVENTARIO
+
+---Tabla DETALLE_VENTA
+CREATE TABLE DETALLE_VENTA (
+    id_detalle  INT IDENTITY(1,1) PRIMARY KEY,
+    cantidad    INT NOT NULL CHECK (cantidad > 0),
+    subtotal    DECIMAL(10,2) NOT NULL CHECK (subtotal >= 0),
+    id_venta    INT NOT NULL,
+    id_producto INT NOT NULL,
+    CONSTRAINT FK_DETALLEVENTA_VENTA
+        FOREIGN KEY (id_venta)
+        REFERENCES VENTA(id_venta)
+        ON UPDATE CASCADE
+        ON DELETE CASCADE,
+    CONSTRAINT FK_DETALLEVENTA_PRODUCTO
+        FOREIGN KEY (id_producto)
+        REFERENCES PRODUCTO(id_producto)
+        ON UPDATE CASCADE
+        ON DELETE NO ACTION
+);
+EXEC sp_help DETALLE_VENTA
