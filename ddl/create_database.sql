@@ -43,3 +43,28 @@ CREATE TABLE CLASIFICACION_ABC (
         ON UPDATE CASCADE
         ON DELETE CASCADE
 );
+EXEC sp_help CLASIFICACION_ABC
+
+---Tabla INVENTARIO
+CREATE TABLE INVENTARIO (
+    id_movimiento   INT IDENTITY(1,1) PRIMARY KEY,
+    tipo_movimiento VARCHAR(20) NOT NULL,    -- 'entrada' / 'salida'
+    cantidad        INT NOT NULL,
+    fecha           DATE NOT NULL,
+    id_producto     INT NOT NULL,
+    CONSTRAINT CK_INVENTARIO_tipo
+        CHECK (tipo_movimiento IN ('entrada','salida')),
+    CONSTRAINT CK_INVENTARIO_cantidad
+        CHECK (cantidad > 0),
+    CONSTRAINT FK_INVENTARIO_PRODUCTO
+        FOREIGN KEY (id_producto)
+        REFERENCES PRODUCTO(id_producto)
+        ON UPDATE CASCADE --En caso sea necesario la actualizacion del id del producto
+        ON DELETE NO ACTION --Evita que el producto sea eliminado en caso tenga movimientos
+);
+GO --Fin del primer lote
+
+-- Índice de apoyo para consultas por producto
+CREATE INDEX IX_INVENTARIO_id_producto ON INVENTARIO(id_producto);
+GO--Fin del segundo lote
+EXEC sp_help INVENTARIO
