@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{D2ABAB84-BF74-430A-B69E-9DC6D40DDA17}") = "ssas_data_driven_inventory", "ssas_data_driven_inventory.dwproj", "{9B2C2602-AD0B-D9E7-72BD-292DA7D20DBA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B2C2602-AD0B-D9E7-72BD-292DA7D20DBA}.Development|Default.ActiveCfg = Development
+		{9B2C2602-AD0B-D9E7-72BD-292DA7D20DBA}.Development|Default.Build.0 = Development
+		{9B2C2602-AD0B-D9E7-72BD-292DA7D20DBA}.Development|Default.Deploy.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {19865732-405F-4244-BC75-B4F29EA21A13}
+	EndGlobalSection
+EndGlobal

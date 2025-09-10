@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{C9674DCB-5085-4A16-B785-4C70DD1589BD}") = "IS_Data_Driven_Inventory_Control_", "IS_Data_Driven_Inventory_Control_.dtproj", "{AD9D6353-3143-4F07-DA39-D10F108A53DC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Development|Default = Development|Default
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AD9D6353-3143-4F07-DA39-D10F108A53DC}.Development|Default.ActiveCfg = Development
+		{AD9D6353-3143-4F07-DA39-D10F108A53DC}.Development|Default.Build.0 = Development
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D5E3E305-EF72-4A8C-A7D6-6D6597099616}
+	EndGlobalSection
+EndGlobal

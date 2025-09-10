@@ -1,0 +1,82 @@
+﻿<DeploymentSnapshot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ddl2="http://schemas.microsoft.com/analysisservices/2003/engine/2" xmlns:ddl2_2="http://schemas.microsoft.com/analysisservices/2003/engine/2/2" xmlns:ddl100_100="http://schemas.microsoft.com/analysisservices/2008/engine/100/100" xmlns:ddl200="http://schemas.microsoft.com/analysisservices/2010/engine/200" xmlns:ddl200_200="http://schemas.microsoft.com/analysisservices/2010/engine/200/200" xmlns:ddl300="http://schemas.microsoft.com/analysisservices/2011/engine/300" xmlns:ddl300_300="http://schemas.microsoft.com/analysisservices/2011/engine/300/300" xmlns:ddl400="http://schemas.microsoft.com/analysisservices/2012/engine/400" xmlns:ddl400_400="http://schemas.microsoft.com/analysisservices/2012/engine/400/400" xmlns:ddl500="http://schemas.microsoft.com/analysisservices/2013/engine/500" xmlns:ddl500_500="http://schemas.microsoft.com/analysisservices/2013/engine/500/500" xmlns:dwd="http://schemas.microsoft.com/DataWarehouse/Designer/1.0">
+  <Target>
+    <Database>ssas_data_driven_inventory</Database>
+    <Server>localhost</Server>
+    <ConnectionString>Data Source=localhost;Timeout=0</ConnectionString>
+  </Target>
+  <Options>
+    <TransactionalDeployment>false</TransactionalDeployment>
+    <PartitionDeployment>DeployPartitions</PartitionDeployment>
+    <RoleDeployment>DeployRolesRetainMembers</RoleDeployment>
+    <ProcessingOption>DoNotProcess</ProcessingOption>
+    <OutputScript></OutputScript>
+    <ImpactAnalysisFile></ImpactAnalysisFile>
+    <ConfigurationSettingsDeployment>Deploy</ConfigurationSettingsDeployment>
+    <OptimizationSettingsDeployment>Deploy</OptimizationSettingsDeployment>
+    <WriteBackTableCreation>UseExisting</WriteBackTableCreation>
+  </Options>
+  <Snapshot>
+    <ObjectSnapshots>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.RelationalDataSource</Type>
+        <TimeStamp>9+X+IMWeIs+MwCLlmCwCGUD69OI=10/09/2025 12:26:16 a. m.10/09/2025 12:16:05 a. m.</TimeStamp>
+        <ID>
+          <String>Dw Data Driven Inventory Control</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.DataSourceView</Type>
+        <TimeStamp>IjH+eKQHgd+A/C5B2HM1kgrqIWs=10/09/2025 12:18:35 a. m.10/09/2025 12:16:39 a. m.</TimeStamp>
+        <ID>
+          <String>Dw Data Driven Inventory Control</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>2fzWpL4OB7JUAMt1l3i+pyiPYIk=10/09/2025 01:40:00 a. m.10/09/2025 12:18:35 a. m.</TimeStamp>
+        <ID>
+          <String>Dim Cliente</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>LIGzDgxcN2UlKgsYj35U6ReutzI=10/09/2025 01:40:00 a. m.10/09/2025 12:18:35 a. m.</TimeStamp>
+        <ID>
+          <String>Dim Producto</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>zN0IPFnYfgdN3BMKZ+RWplb0XNU=10/09/2025 01:40:00 a. m.10/09/2025 12:18:35 a. m.</TimeStamp>
+        <ID>
+          <String>Dim Tiempo</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Dimension</Type>
+        <TimeStamp>90GSnFgHlThqPnSpSL+cRrLuELo=10/09/2025 01:40:00 a. m.10/09/2025 12:18:35 a. m.</TimeStamp>
+        <ID>
+          <String>Dim Categoria Abc</String>
+        </ID>
+      </ObjectSnapshot>
+      <ObjectSnapshot>
+        <Type>Microsoft.AnalysisServices.Cube</Type>
+        <TimeStamp>SCNxh2fMhGEI43SnhVmOI5nbKjQ=10/09/2025 01:40:00 a. m.10/09/2025 12:18:35 a. m.4Y15bt6mkMndQHnTXXNCc5mdlMI=10/09/2025 12:18:35 a. m.10/09/2025 12:18:35 a. m.</TimeStamp>
+        <ID>
+          <String>Dw Data Driven Inventory Control</String>
+        </ID>
+      </ObjectSnapshot>
+    </ObjectSnapshots>
+    <DatabaseSnapshot>
+      <Type>Microsoft.AnalysisServices.Database</Type>
+      <TimeStamp>iGeuditcErOSo2jrxmAqA3yqQ7I=10/09/2025 12:09:16 a. m.10/09/2025 12:09:16 a. m.</TimeStamp>
+      <ID>
+        <String>ssas_data_driven_inventory</String>
+      </ID>
+    </DatabaseSnapshot>
+    <Granularity>Coarse</Granularity>
+  </Snapshot>
+  <AssemblyLocations />
+  <ProcessingComplete>true</ProcessingComplete>
+  <LastDeployed>2025-09-10T06:40:01.593333Z</LastDeployed>
+</DeploymentSnapshot>

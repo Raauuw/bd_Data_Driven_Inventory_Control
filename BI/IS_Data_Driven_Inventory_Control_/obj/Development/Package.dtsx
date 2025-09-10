@@ -1,0 +1,3033 @@
+<?xml version="1.0"?>
+<DTS:Executable xmlns:DTS="www.microsoft.com/SqlServer/Dts"
+  DTS:refId="Package"
+  DTS:CreationDate="9/9/2025 1:50:46 AM"
+  DTS:CreationName="Microsoft.Package"
+  DTS:CreatorComputerName="GIANFRANCO"
+  DTS:CreatorName="GIANFRANCO\Raidd"
+  DTS:DTSID="{7EF85F1B-AFE9-4704-B5AD-033B0482321A}"
+  DTS:ExecutableType="Microsoft.Package"
+  DTS:LastModifiedProductVersion="16.0.5685.2"
+  DTS:LocaleID="2058"
+  DTS:ObjectName="Package"
+  DTS:PackageType="5"
+  DTS:VersionBuild="25"
+  DTS:VersionGUID="{AE34B906-4BCC-4C80-807A-97F7C99C4870}">
+  <DTS:Property
+    DTS:Name="PackageFormatVersion">8</DTS:Property>
+  <DTS:ConnectionManagers>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{4A0D9016-C3D5-47FB-A6FA-5CC82E984507}"
+      DTS:ObjectName=".\SQLEXPRESS.bd_data_driven_inventory_control">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=bd_data_driven_inventory_control;Provider=SQLOLEDB.1;Integrated Security=SSPI;Auto Translate=False;Application Name=SSIS-Package-{4A0D9016-C3D5-47FB-A6FA-5CC82E984507}.\SQLEXPRESS;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+    <DTS:ConnectionManager
+      DTS:refId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+      DTS:CreationName="OLEDB"
+      DTS:DTSID="{7E0817E0-A0FD-4555-BD8A-1CBD58AF9278}"
+      DTS:ObjectName=".\SQLEXPRESS.dw_data_driven_inventory_control">
+      <DTS:ObjectData>
+        <DTS:ConnectionManager
+          DTS:ConnectRetryCount="1"
+          DTS:ConnectRetryInterval="5"
+          DTS:ConnectionString="Data Source=.\SQLEXPRESS;Initial Catalog=dw_data_driven_inventory_control;Provider=SQLOLEDB.1;Integrated Security=SSPI;Application Name=SSIS-Package-{7E0817E0-A0FD-4555-BD8A-1CBD58AF9278}.\SQLEXPRESS.dw_data_driven_inventory_control;Auto Translate=False;" />
+      </DTS:ObjectData>
+    </DTS:ConnectionManager>
+  </DTS:ConnectionManagers>
+  <DTS:Variables />
+  <DTS:Executables>
+    <DTS:Executable
+      DTS:refId="Package\Clean tables destination"
+      DTS:CreationName="Microsoft.ExecuteSQLTask"
+      DTS:Description="Tarea Ejecutar SQL"
+      DTS:DTSID="{053F5C55-DC05-4B1F-A5B3-4D72F3F9F97F}"
+      DTS:ExecutableType="Microsoft.ExecuteSQLTask"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Clean tables destination"
+      DTS:TaskContact="Execute SQL Task; Microsoft Corporation; SQL Server 2022; © 2022 Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1"
+      DTS:ThreadHint="0">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <SQLTask:SqlTaskData
+          SQLTask:Connection="{7E0817E0-A0FD-4555-BD8A-1CBD58AF9278}"
+          SQLTask:SqlStatementSource="DELETE FROM dbo.dim_producto;&#xA;DELETE FROM dbo.dim_cliente;&#xA;DELETE FROM dbo.dim_categoria_abc;&#xA;DELETE FROM dbo.dim_tiempo;&#xA;DBCC CHECKIDENT ('dbo.fact_ventas', RESEED, 0);&#xA;DBCC CHECKIDENT ('dbo.dim_producto', RESEED, 0);&#xA;DBCC CHECKIDENT ('dbo.dim_cliente', RESEED, 0);&#xA;DBCC CHECKIDENT ('dbo.dim_categoria_abc', RESEED, 0);&#xA;DBCC CHECKIDENT ('dbo.dim_tiempo', RESEED, 0);" xmlns:SQLTask="www.microsoft.com/sqlserver/dts/tasks/sqltask" />
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Poblar informacion"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{8DCAC313-806F-4C2A-810A-BFE66EACD7AE}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Poblar informacion"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Poblar informacion\Destino Categoria ABC"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destino Categoria ABC"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dim_categoria_abc]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Destino Categoria ABC.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input].Columns[categoria_abc]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="categoria_abc"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input].ExternalColumns[categoria_abc]"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].Columns[categoria_abc]" />
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input].Columns[descripcion]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="17"
+                      cachedName="descripcion"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input].ExternalColumns[descripcion]"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].Columns[descripcion]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input].ExternalColumns[categoria_key]"
+                      dataType="i4"
+                      name="categoria_key" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input].ExternalColumns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="categoria_abc" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input].ExternalColumns[descripcion]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="descripcion" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Destino Categoria ABC.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Categoria ABC.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Categoria ABC.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Categoria ABC.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Categoria ABC.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Poblar informacion\Destino Cliente"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destino Cliente"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dim_cliente]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Destino Cliente.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].Columns[id_cliente]"
+                      cachedDataType="i4"
+                      cachedName="id_cliente"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].ExternalColumns[id_cliente]"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[id_cliente]" />
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].Columns[nombre_cliente]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="255"
+                      cachedName="nombre_cliente"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].ExternalColumns[nombre_cliente]"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[nombre_cliente]" />
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].Columns[correo]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="correo"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].ExternalColumns[correo]"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[correo]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].ExternalColumns[cliente_key]"
+                      dataType="i4"
+                      name="cliente_key" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].ExternalColumns[id_cliente]"
+                      dataType="i4"
+                      name="id_cliente" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].ExternalColumns[nombre_cliente]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="nombre_cliente" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input].ExternalColumns[correo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="correo" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Destino Cliente.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Cliente.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Cliente.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Cliente.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Poblar informacion\Destino Producto"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destino Producto"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dim_producto]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Destino Producto.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].Columns[id_producto]"
+                      cachedDataType="i4"
+                      cachedName="id_producto"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[id_producto]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[id_producto]" />
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].Columns[nombre_producto]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="100"
+                      cachedName="nombre_producto"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[nombre_producto]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[nombre_producto]" />
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].Columns[precio_unitario]"
+                      cachedDataType="numeric"
+                      cachedName="precio_unitario"
+                      cachedPrecision="10"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[precio_unitario]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[precio_unitario]" />
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].Columns[stock_actual]"
+                      cachedDataType="i4"
+                      cachedName="stock_actual"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[stock_actual]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[stock_actual]" />
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].Columns[categoria_abc]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="categoria_abc"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[categoria_abc]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[categoria_abc]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[producto_key]"
+                      dataType="i4"
+                      name="producto_key" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[id_producto]"
+                      dataType="i4"
+                      name="id_producto" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[nombre_producto]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="nombre_producto" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[precio_unitario]"
+                      dataType="numeric"
+                      name="precio_unitario"
+                      precision="10"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[stock_actual]"
+                      dataType="i4"
+                      name="stock_actual" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input].ExternalColumns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="categoria_abc" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Destino Producto.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Producto.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Producto.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Producto.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Producto.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Poblar informacion\Destino Tiempo"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="Destino Tiempo"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[dim_tiempo]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">3</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions">TABLOCK,CHECK_CONSTRAINTS</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Destino Tiempo.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input].Columns[fecha]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="fecha"
+                      externalMetadataColumnId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input].ExternalColumns[fecha]"
+                      lineageId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Output].Columns[fecha]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input].ExternalColumns[tiempo_key]"
+                      dataType="i4"
+                      name="tiempo_key" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input].ExternalColumns[fecha]"
+                      dataType="wstr"
+                      length="10"
+                      name="fecha" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input].ExternalColumns[anio]"
+                      dataType="i4"
+                      name="anio" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input].ExternalColumns[mes]"
+                      dataType="i4"
+                      name="mes" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input].ExternalColumns[trimestre]"
+                      dataType="i4"
+                      name="trimestre" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Destino Tiempo.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Tiempo.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Destino Tiempo.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Destino Tiempo.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Poblar informacion\Origen Categoria ABC"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Origen Categoria ABC"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT 
+    categoria_abc,
+    CASE categoria_abc
+        WHEN 'A' THEN 'Alto valor'
+        WHEN 'B' THEN 'Valor medio'
+        WHEN 'C' THEN 'Bajo valor'
+        ELSE 'Sin clasificación'
+    END AS descripcion
+FROM dbo.CLASIFICACION_ABC;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Origen Categoria ABC.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].Columns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].ExternalColumns[categoria_abc]"
+                      length="1"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].Columns[categoria_abc]"
+                      name="categoria_abc"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].Columns[descripcion]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].ExternalColumns[descripcion]"
+                      length="17"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].Columns[descripcion]"
+                      name="descripcion"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].ExternalColumns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="categoria_abc" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output].ExternalColumns[descripcion]"
+                      codePage="1252"
+                      dataType="str"
+                      length="17"
+                      name="descripcion" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[categoria_abc]"
+                      name="categoria_abc" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[descripcion]"
+                      codePage="1252"
+                      dataType="str"
+                      length="17"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[descripcion]"
+                      name="descripcion" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Poblar informacion\Origen Cliente"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Origen Cliente"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT id_cliente, nombre_cliente, correo
+FROM dbo.CLIENTE;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Origen Cliente.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[id_cliente]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].ExternalColumns[id_cliente]"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[id_cliente]"
+                      name="id_cliente"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[nombre_cliente]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].ExternalColumns[nombre_cliente]"
+                      length="255"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[nombre_cliente]"
+                      name="nombre_cliente"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[correo]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].ExternalColumns[correo]"
+                      length="100"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].Columns[correo]"
+                      name="correo"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].ExternalColumns[id_cliente]"
+                      dataType="i4"
+                      name="id_cliente" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].ExternalColumns[nombre_cliente]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      name="nombre_cliente" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output].ExternalColumns[correo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="correo" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[id_cliente]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[id_cliente]"
+                      name="id_cliente" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[nombre_cliente]"
+                      codePage="1252"
+                      dataType="str"
+                      length="255"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[nombre_cliente]"
+                      name="nombre_cliente" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[correo]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[correo]"
+                      name="correo" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Poblar informacion\Origen Producto"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Origen Producto"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+    p.id_producto,
+    p.nombre_producto,
+    p.precio       AS precio_unitario,
+    p.stock        AS stock_actual,
+    ca.categoria_abc
+FROM dbo.PRODUCTO AS p
+LEFT JOIN dbo.CLASIFICACION_ABC AS ca
+  ON ca.id_producto = p.id_producto;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Origen Producto.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[id_producto]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[id_producto]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[id_producto]"
+                      name="id_producto"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[nombre_producto]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[nombre_producto]"
+                      length="100"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[nombre_producto]"
+                      name="nombre_producto"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[precio_unitario]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[precio_unitario]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[precio_unitario]"
+                      name="precio_unitario"
+                      precision="10"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[stock_actual]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[stock_actual]"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[stock_actual]"
+                      name="stock_actual"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[categoria_abc]"
+                      length="1"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].Columns[categoria_abc]"
+                      name="categoria_abc"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[id_producto]"
+                      dataType="i4"
+                      name="id_producto" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[nombre_producto]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      name="nombre_producto" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[precio_unitario]"
+                      dataType="numeric"
+                      name="precio_unitario"
+                      precision="10"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[stock_actual]"
+                      dataType="i4"
+                      name="stock_actual" />
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output].ExternalColumns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="categoria_abc" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[id_producto]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[id_producto]"
+                      name="id_producto" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[nombre_producto]"
+                      codePage="1252"
+                      dataType="str"
+                      length="100"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[nombre_producto]"
+                      name="nombre_producto" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[precio_unitario]"
+                      dataType="numeric"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[precio_unitario]"
+                      name="precio_unitario"
+                      precision="10"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[stock_actual]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[stock_actual]"
+                      name="stock_actual" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[categoria_abc]"
+                      name="categoria_abc" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Poblar informacion\Origen Tiempo"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Origen Tiempo"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT DISTINCT CAST(v.fecha AS date) AS fecha
+FROM dbo.VENTA AS v;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Poblar informacion\Origen Tiempo.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Output].Columns[fecha]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Output].ExternalColumns[fecha]"
+                      length="10"
+                      lineageId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Output].Columns[fecha]"
+                      name="fecha"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Output].ExternalColumns[fecha]"
+                      dataType="wstr"
+                      length="10"
+                      name="fecha" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Error Output].Columns[fecha]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Error Output].Columns[fecha]"
+                      name="fecha" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Poblar informacion.Paths[OLE DB Source Output]"
+              endId="Package\Poblar informacion\Destino Tiempo.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Poblar informacion\Origen Tiempo.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Poblar informacion.Paths[OLE DB Source Output1]"
+              endId="Package\Poblar informacion\Destino Categoria ABC.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Poblar informacion\Origen Categoria ABC.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Poblar informacion.Paths[OLE DB Source Output2]"
+              endId="Package\Poblar informacion\Destino Cliente.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Poblar informacion\Origen Cliente.Outputs[OLE DB Source Output]" />
+            <path
+              refId="Package\Poblar informacion.Paths[OLE DB Source Output3]"
+              endId="Package\Poblar informacion\Destino Producto.Inputs[OLE DB Destination Input]"
+              name="OLE DB Source Output"
+              startId="Package\Poblar informacion\Origen Producto.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+    <DTS:Executable
+      DTS:refId="Package\Probar Fact Table"
+      DTS:CreationName="Microsoft.Pipeline"
+      DTS:Description="Data Flow Task"
+      DTS:DTSID="{8C72D41C-8ABE-4C81-B438-4C07CCA6D273}"
+      DTS:ExecutableType="Microsoft.Pipeline"
+      DTS:LocaleID="-1"
+      DTS:ObjectName="Probar Fact Table"
+      DTS:TaskContact="Performs high-performance data extraction, transformation and loading;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved;http://www.microsoft.com/sql/support/default.asp;1">
+      <DTS:Variables />
+      <DTS:ObjectData>
+        <pipeline
+          version="1">
+          <components>
+            <component
+              refId="Package\Probar Fact Table\Lookup"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_tiempo]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_tiempo]) [refTable]
+where [refTable].[fecha] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="tiempo_key" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="fecha" dataType="DT_WSTR" length="10" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="anio" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="mes" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="trimestre" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[fecha]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Probar Fact Table\Lookup.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Probar Fact Table\Lookup.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Probar Fact Table\Lookup.Inputs[Lookup Input].Columns[fecha]"
+                      cachedDataType="wstr"
+                      cachedLength="10"
+                      cachedName="fecha"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[fecha]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">fecha</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Probar Fact Table\Lookup.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup.Outputs[Lookup Match Output].Columns[tiempo_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Probar Fact Table\Lookup.Outputs[Lookup Match Output].Columns[tiempo_key]"
+                      name="tiempo_key"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">tiempo_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Probar Fact Table\Lookup 1"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup 1"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_producto]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_producto]) [refTable]
+where [refTable].[id_producto] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="producto_key" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="id_producto" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="nombre_producto" dataType="DT_STR" length="100" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="precio_unitario" dataType="DT_NUMERIC" length="0" precision="10" scale="2" codePage="0"/&gt;&lt;referenceColumn name="stock_actual" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="categoria_abc" dataType="DT_STR" length="1" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_producto]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Probar Fact Table\Lookup 1.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Probar Fact Table\Lookup 1.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Probar Fact Table\Lookup 1.Inputs[Lookup Input].Columns[id_producto]"
+                      cachedDataType="i4"
+                      cachedName="id_producto"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_producto]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">id_producto</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 1.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Match Output].Columns[producto_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Match Output].Columns[producto_key]"
+                      name="producto_key"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">producto_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 1.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 1.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Probar Fact Table\Lookup 2"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup 2"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_cliente]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_cliente]) [refTable]
+where [refTable].[id_cliente] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">1</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="cliente_key" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="id_cliente" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="nombre_cliente" dataType="DT_STR" length="100" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="correo" dataType="DT_STR" length="100" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_cliente]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Probar Fact Table\Lookup 2.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Probar Fact Table\Lookup 2.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Probar Fact Table\Lookup 2.Inputs[Lookup Input].Columns[id_cliente]"
+                      cachedDataType="i4"
+                      cachedName="id_cliente"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_cliente]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">id_cliente</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 2.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Match Output].Columns[cliente_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Match Output].Columns[cliente_key]"
+                      name="cliente_key"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">cliente_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 2.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 2.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Probar Fact Table\Lookup 3"
+              componentClassID="Microsoft.Lookup"
+              contactInfo="Lookup;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;6"
+              description="Joins additional columns to the data flow by looking up values in a table. For example, join to the 'employee id' column the employees table to get 'hire date' and 'employee name'. We recommend this transformation when the lookup table can fit into memory."
+              name="Lookup 3"
+              usesDispositions="true"
+              version="6">
+              <properties>
+                <property
+                  dataType="System.String"
+                  description="Specifies the SQL statement that generates the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from [dbo].[dim_categoria_abc]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies a SQL statement that uses parameters to generate the lookup table."
+                  expressionType="Notify"
+                  name="SqlCommandParam"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">select * from (select * from [dbo].[dim_categoria_abc]) [refTable]
+where [refTable].[categoria_abc] = ?</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the type of connection used to access the reference dataset."
+                  name="ConnectionType"
+                  typeConverter="LookupConnectionType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the cache type of the lookup table."
+                  name="CacheType"
+                  typeConverter="CacheType">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies how the Lookup transformation handles rows without matching entries in the reference data set."
+                  name="NoMatchBehavior"
+                  typeConverter="LookupNoMatchBehavior">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the percentage of the cache that is allocated for rows with no matching entries in the reference dataset."
+                  name="NoMatchCachePercentage">0</property>
+                <property
+                  dataType="System.Int32"
+                  description="Maximum Memory Usage for Reference Cache on a 32 bit platform."
+                  name="MaxMemoryUsage">25</property>
+                <property
+                  dataType="System.Int64"
+                  description="Maximum Memory Usage for Reference Cache on a 64 bit platform."
+                  name="MaxMemoryUsage64">25</property>
+                <property
+                  dataType="System.String"
+                  description="Indicates whether to reference metadata in an XML format."
+                  name="ReferenceMetadataXml">&lt;referenceMetadata&gt;&lt;referenceColumns&gt;&lt;referenceColumn name="categoria_key" dataType="DT_I4" length="0" precision="0" scale="0" codePage="0"/&gt;&lt;referenceColumn name="categoria_abc" dataType="DT_STR" length="1" precision="0" scale="0" codePage="1252"/&gt;&lt;referenceColumn name="descripcion" dataType="DT_STR" length="100" precision="0" scale="0" codePage="1252"/&gt;&lt;/referenceColumns&gt;&lt;/referenceMetadata&gt;</property>
+                <property
+                  containsID="true"
+                  dataType="System.String"
+                  description="Specifies the list of lineage identifiers that map to the parameters that the SQL statement in the SQLCommand property uses. Entries in the list are separated by semicolons."
+                  name="ParameterMap">#{Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[categoria_abc]};</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Determines whether duplicate keys in the reference data should be treated as errors when full cache mode is used."
+                  name="TreatDuplicateKeysAsError">false</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Probar Fact Table\Lookup 3.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="Connection manager used to access lookup data."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Probar Fact Table\Lookup 3.Inputs[Lookup Input]"
+                  name="Lookup Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Probar Fact Table\Lookup 3.Inputs[Lookup Input].Columns[categoria_abc]"
+                      cachedCodepage="1252"
+                      cachedDataType="str"
+                      cachedLength="1"
+                      cachedName="categoria_abc"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[categoria_abc]">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table that a column joins."
+                          name="JoinToReferenceColumn">categoria_abc</property>
+                        <property
+                          dataType="System.Null"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn" />
+                      </properties>
+                    </inputColumn>
+                  </inputColumns>
+                  <externalMetadataColumns />
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Match Output]"
+                  errorOrTruncationOperation="Lookup"
+                  errorRowDisposition="FailComponent"
+                  exclusionGroup="1"
+                  name="Lookup Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 3.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Match Output].Columns[categoria_key]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Copy Column"
+                      lineageId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Match Output].Columns[categoria_key]"
+                      name="categoria_key"
+                      truncationRowDisposition="FailComponent">
+                      <properties>
+                        <property
+                          dataType="System.String"
+                          description="Specifies the column in the reference table from which a column is copied."
+                          name="CopyFromReferenceColumn">categoria_key</property>
+                      </properties>
+                    </outputColumn>
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup No Match Output]"
+                  description="The Lookup output that handles rows with no matching entries in the reference dataset. Use this output when the NoMatchBehavior property is set to &quot;Send rows with no matching entries to the no match output.&quot;"
+                  exclusionGroup="1"
+                  name="Lookup No Match Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 3.Inputs[Lookup Input]">
+                  <externalMetadataColumns />
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="Lookup Error Output"
+                  synchronousInputId="Package\Probar Fact Table\Lookup 3.Inputs[Lookup Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Probar Fact Table\OLE DB Destination"
+              componentClassID="Microsoft.OLEDBDestination"
+              contactInfo="OLE DB Destination;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;4"
+              description="OLE DB Destination"
+              name="OLE DB Destination"
+              usesDispositions="true"
+              version="4">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset">[dbo].[fact_ventas]</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">0</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the values supplied for identity columns will be copied to the destination. If false, values for identity columns will be auto-generated at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepIdentity">false</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Indicates whether the columns containing null will have null inserted in the destination. If false, columns containing null will have their default values inserted at the destination. Applies only if fast load is turned on."
+                  name="FastLoadKeepNulls">false</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies options to be used with fast load.  Applies only if fast load is turned on."
+                  name="FastLoadOptions"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies when commits are issued during data insertion.  A value of 0 specifies that one commit will be issued at the end of data insertion.  Applies only if fast load is turned on."
+                  name="FastLoadMaxInsertCommitSize">2147483647</property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Probar Fact Table\OLE DB Destination.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.dw_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <inputs>
+                <input
+                  refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input]"
+                  errorOrTruncationOperation="Insert"
+                  errorRowDisposition="FailComponent"
+                  hasSideEffects="true"
+                  name="OLE DB Destination Input">
+                  <inputColumns>
+                    <inputColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[subtotal]"
+                      cachedDataType="numeric"
+                      cachedName="subtotal"
+                      cachedPrecision="10"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[subtotal]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[subtotal]" />
+                    <inputColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[total]"
+                      cachedDataType="numeric"
+                      cachedName="total"
+                      cachedPrecision="10"
+                      cachedScale="2"
+                      externalMetadataColumnId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[total]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[total]" />
+                    <inputColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].Columns[cantidad]"
+                      cachedDataType="i4"
+                      cachedName="cantidad"
+                      externalMetadataColumnId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[cantidad]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[cantidad]" />
+                  </inputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[fact_key]"
+                      dataType="i4"
+                      name="fact_key" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[tiempo_key]"
+                      dataType="i4"
+                      name="tiempo_key" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[producto_key]"
+                      dataType="i4"
+                      name="producto_key" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[cliente_key]"
+                      dataType="i4"
+                      name="cliente_key" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[categoria_key]"
+                      dataType="i4"
+                      name="categoria_key" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[cantidad]"
+                      dataType="i4"
+                      name="cantidad" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[subtotal]"
+                      dataType="numeric"
+                      name="subtotal"
+                      precision="12"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input].ExternalColumns[total]"
+                      dataType="numeric"
+                      name="total"
+                      precision="12"
+                      scale="2" />
+                  </externalMetadataColumns>
+                </input>
+              </inputs>
+              <outputs>
+                <output
+                  refId="Package\Probar Fact Table\OLE DB Destination.Outputs[OLE DB Destination Error Output]"
+                  exclusionGroup="1"
+                  isErrorOut="true"
+                  name="OLE DB Destination Error Output"
+                  synchronousInputId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input]">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\OLE DB Destination.Outputs[OLE DB Destination Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+            <component
+              refId="Package\Probar Fact Table\Origen Hechos"
+              componentClassID="Microsoft.OLEDBSource"
+              contactInfo="OLE DB Source;Microsoft Corporation; Microsoft SQL Server; (C) Microsoft Corporation; All Rights Reserved; http://www.microsoft.com/sql/support;7"
+              description="OLE DB Source"
+              name="Origen Hechos"
+              usesDispositions="true"
+              version="7">
+              <properties>
+                <property
+                  dataType="System.Int32"
+                  description="The number of seconds before a command times out.  A value of 0 indicates an infinite time-out."
+                  name="CommandTimeout">0</property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the name of the database object used to open a rowset."
+                  name="OpenRowset"></property>
+                <property
+                  dataType="System.String"
+                  description="Specifies the variable that contains the name of the database object used to open a rowset."
+                  name="OpenRowsetVariable"></property>
+                <property
+                  dataType="System.String"
+                  description="The SQL command to be executed."
+                  name="SqlCommand"
+                  UITypeEditor="Microsoft.DataTransformationServices.Controls.ModalMultilineStringEditor">SELECT
+    CAST(v.fecha AS date) AS fecha,  -- para lookup de tiempo
+    v.id_cliente,
+    dv.id_producto,
+    dv.cantidad,
+    dv.subtotal,
+    v.total,
+    ca.categoria_abc
+FROM dbo.DETALLE_VENTA AS dv
+JOIN dbo.VENTA AS v
+  ON v.id_venta = dv.id_venta
+LEFT JOIN dbo.CLASIFICACION_ABC AS ca
+  ON ca.id_producto = dv.id_producto;</property>
+                <property
+                  dataType="System.String"
+                  description="The variable that contains the SQL command to be executed."
+                  name="SqlCommandVariable"></property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the column code page to use when code page information is unavailable from the data source."
+                  name="DefaultCodePage">1252</property>
+                <property
+                  dataType="System.Boolean"
+                  description="Forces the use of the DefaultCodePage property value when describing character data."
+                  name="AlwaysUseDefaultCodePage">false</property>
+                <property
+                  dataType="System.Int32"
+                  description="Specifies the mode used to access the database."
+                  name="AccessMode"
+                  typeConverter="AccessMode">2</property>
+                <property
+                  dataType="System.String"
+                  description="The mappings between the parameters in the SQL command and variables."
+                  name="ParameterMapping"></property>
+              </properties>
+              <connections>
+                <connection
+                  refId="Package\Probar Fact Table\Origen Hechos.Connections[OleDbConnection]"
+                  connectionManagerID="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  connectionManagerRefId="Package.ConnectionManagers[.\SQLEXPRESS.bd_data_driven_inventory_control]"
+                  description="The OLE DB runtime connection used to access the database."
+                  name="OleDbConnection" />
+              </connections>
+              <outputs>
+                <output
+                  refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output]"
+                  name="OLE DB Source Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_cliente]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[id_cliente]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_cliente]"
+                      name="id_cliente"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_producto]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[id_producto]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[id_producto]"
+                      name="id_producto"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[cantidad]"
+                      dataType="i4"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[cantidad]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[cantidad]"
+                      name="cantidad"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[subtotal]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[subtotal]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[subtotal]"
+                      name="subtotal"
+                      precision="10"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[total]"
+                      dataType="numeric"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[total]"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[total]"
+                      name="total"
+                      precision="10"
+                      scale="2"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[categoria_abc]"
+                      length="1"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[categoria_abc]"
+                      name="categoria_abc"
+                      truncationRowDisposition="FailComponent" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[fecha]"
+                      dataType="wstr"
+                      errorOrTruncationOperation="Conversion"
+                      errorRowDisposition="FailComponent"
+                      externalMetadataColumnId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[fecha]"
+                      length="10"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].Columns[fecha]"
+                      name="fecha"
+                      truncationRowDisposition="FailComponent" />
+                  </outputColumns>
+                  <externalMetadataColumns
+                    isUsed="True">
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[fecha]"
+                      dataType="wstr"
+                      length="10"
+                      name="fecha" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[id_cliente]"
+                      dataType="i4"
+                      name="id_cliente" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[id_producto]"
+                      dataType="i4"
+                      name="id_producto" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[cantidad]"
+                      dataType="i4"
+                      name="cantidad" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[subtotal]"
+                      dataType="numeric"
+                      name="subtotal"
+                      precision="10"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[total]"
+                      dataType="numeric"
+                      name="total"
+                      precision="10"
+                      scale="2" />
+                    <externalMetadataColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output].ExternalColumns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      name="categoria_abc" />
+                  </externalMetadataColumns>
+                </output>
+                <output
+                  refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output]"
+                  isErrorOut="true"
+                  name="OLE DB Source Error Output">
+                  <outputColumns>
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[id_cliente]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[id_cliente]"
+                      name="id_cliente" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[id_producto]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[id_producto]"
+                      name="id_producto" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[cantidad]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[cantidad]"
+                      name="cantidad" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[subtotal]"
+                      dataType="numeric"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[subtotal]"
+                      name="subtotal"
+                      precision="10"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[total]"
+                      dataType="numeric"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[total]"
+                      name="total"
+                      precision="10"
+                      scale="2" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[categoria_abc]"
+                      codePage="1252"
+                      dataType="str"
+                      length="1"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[categoria_abc]"
+                      name="categoria_abc" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[ErrorCode]"
+                      name="ErrorCode"
+                      specialFlags="1" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      dataType="i4"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[ErrorColumn]"
+                      name="ErrorColumn"
+                      specialFlags="2" />
+                    <outputColumn
+                      refId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[fecha]"
+                      dataType="wstr"
+                      length="10"
+                      lineageId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Error Output].Columns[fecha]"
+                      name="fecha" />
+                  </outputColumns>
+                  <externalMetadataColumns />
+                </output>
+              </outputs>
+            </component>
+          </components>
+          <paths>
+            <path
+              refId="Package\Probar Fact Table.Paths[Lookup Match Output]"
+              endId="Package\Probar Fact Table\Lookup 1.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\Probar Fact Table\Lookup.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Probar Fact Table.Paths[Lookup Match Output1]"
+              endId="Package\Probar Fact Table\Lookup 2.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\Probar Fact Table\Lookup 1.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Probar Fact Table.Paths[Lookup Match Output2]"
+              endId="Package\Probar Fact Table\Lookup 3.Inputs[Lookup Input]"
+              name="Lookup Match Output"
+              startId="Package\Probar Fact Table\Lookup 2.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Probar Fact Table.Paths[Lookup Match Output3]"
+              endId="Package\Probar Fact Table\OLE DB Destination.Inputs[OLE DB Destination Input]"
+              name="Lookup Match Output"
+              startId="Package\Probar Fact Table\Lookup 3.Outputs[Lookup Match Output]" />
+            <path
+              refId="Package\Probar Fact Table.Paths[OLE DB Source Output]"
+              endId="Package\Probar Fact Table\Lookup.Inputs[Lookup Input]"
+              name="OLE DB Source Output"
+              startId="Package\Probar Fact Table\Origen Hechos.Outputs[OLE DB Source Output]" />
+          </paths>
+        </pipeline>
+      </DTS:ObjectData>
+    </DTS:Executable>
+  </DTS:Executables>
+  <DTS:PrecedenceConstraints>
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción]"
+      DTS:CreationName=""
+      DTS:DTSID="{9C849072-FFD4-42CB-AC4D-D8DBE43BC1C4}"
+      DTS:From="Package\Clean tables destination"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción"
+      DTS:To="Package\Poblar informacion" />
+    <DTS:PrecedenceConstraint
+      DTS:refId="Package.PrecedenceConstraints[Restricción 1]"
+      DTS:CreationName=""
+      DTS:DTSID="{3225648F-12E2-47D0-8049-4618A3F5BBFB}"
+      DTS:From="Package\Poblar informacion"
+      DTS:LogicalAnd="True"
+      DTS:ObjectName="Restricción 1"
+      DTS:To="Package\Probar Fact Table" />
+  </DTS:PrecedenceConstraints>
+  <DTS:DesignTimeProperties><![CDATA[<?xml version="1.0"?>
+<!--Esta sección CDATA contiene la información de diseño del paquete. Esta sección incluye información como, por ejemplo, las coordenadas (x,y), el ancho y el alto.-->
+<!--Si edita manualmente esta sección y comete un error, puede eliminarlo. -->
+<!--El paquete podrá cargarse normalmente, pero se perderá la información de diseño anterior y el diseñador reorganizará los elementos automáticamente en la superficie de diseño.-->
+<Objects
+  Version="8">
+  <!--Cada uno de los nodos siguientes contiene propiedades que no afectan al comportamiento en tiempo de ejecución.-->
+  <Package
+    design-time-name="Package">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="8" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="191,42"
+          Id="Package\Clean tables destination"
+          TopLeft="35.5,35.5" />
+        <NodeLayout
+          Size="167,42"
+          Id="Package\Poblar informacion"
+          TopLeft="51,113" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción]"
+          TopLeft="132.75,77.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,35.5"
+              Start="0,0"
+              End="0,28">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,28" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="162,42"
+          Id="Package\Probar Fact Table"
+          TopLeft="40.5,190.5" />
+        <EdgeLayout
+          Id="Package.PrecedenceConstraints[Restricción 1]"
+          TopLeft="134.5,155">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="-13,35.5"
+              Start="0,0"
+              End="-13,28">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,13.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,13.75"
+                    Point2="0,17.75"
+                    Point3="-4,17.75" />
+                  <mssgle:LineSegment
+                    End="-9,17.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="-9,17.75"
+                    Point2="-13,17.75"
+                    Point3="-13,21.75" />
+                  <mssgle:LineSegment
+                    End="-13,28" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </Package>
+  <TaskHost
+    design-time-name="Package\Poblar informacion">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml">
+        <NodeLayout
+          Size="149,42"
+          Id="Package\Poblar informacion\Origen Tiempo"
+          TopLeft="71.2142857142858,5.5" />
+        <NodeLayout
+          Size="153,42"
+          Id="Package\Poblar informacion\Destino Tiempo"
+          TopLeft="96.7142857142858,109" />
+        <EdgeLayout
+          Id="Package\Poblar informacion.Paths[OLE DB Source Output]"
+          TopLeft="145.714285714286,47.5">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="27.5,61.5"
+              Start="0,0"
+              End="27.5,54">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,26.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,26.75"
+                    Point2="0,30.75"
+                    Point3="4,30.75" />
+                  <mssgle:LineSegment
+                    End="23.5,30.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="23.5,30.75"
+                    Point2="27.5,30.75"
+                    Point3="27.5,34.75" />
+                  <mssgle:LineSegment
+                    End="27.5,54" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="181,42"
+          Id="Package\Poblar informacion\Origen Categoria ABC"
+          TopLeft="271.928571428572,16.9285714285714" />
+        <NodeLayout
+          Size="185,42"
+          Id="Package\Poblar informacion\Destino Categoria ABC"
+          TopLeft="289.285714285715,106.428571428571" />
+        <EdgeLayout
+          Id="Package\Poblar informacion.Paths[OLE DB Source Output1]"
+          TopLeft="362.428571428572,58.9285714285714">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="19.3571428571429,47.5"
+              Start="0,0"
+              End="19.3571428571429,40">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.75"
+                    Point2="0,23.75"
+                    Point3="4,23.75" />
+                  <mssgle:LineSegment
+                    End="15.3571428571429,23.75" />
+                  <mssgle:CubicBezierSegment
+                    Point1="15.3571428571429,23.75"
+                    Point2="19.3571428571429,23.75"
+                    Point3="19.3571428571429,27.75" />
+                  <mssgle:LineSegment
+                    End="19.3571428571429,40" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="146,42"
+          Id="Package\Poblar informacion\Origen Cliente"
+          TopLeft="503.357142857144,18.1428571428571" />
+        <NodeLayout
+          Size="150,42"
+          Id="Package\Poblar informacion\Destino Cliente"
+          TopLeft="520.714285714286,107.642857142857" />
+        <EdgeLayout
+          Id="Package\Poblar informacion.Paths[OLE DB Source Output2]"
+          TopLeft="576.35714285714,60.1428571428571">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="19.3571428571429,47.4999999999995"
+              Start="0,0"
+              End="19.3571428571429,39.9999999999995">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.7499999999997" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.7499999999997"
+                    Point2="0,23.7499999999997"
+                    Point3="4,23.7499999999997" />
+                  <mssgle:LineSegment
+                    End="15.3571428571429,23.7499999999997" />
+                  <mssgle:CubicBezierSegment
+                    Point1="15.3571428571429,23.7499999999997"
+                    Point2="19.3571428571429,23.7499999999997"
+                    Point3="19.3571428571429,27.7499999999997" />
+                  <mssgle:LineSegment
+                    End="19.3571428571429,39.9999999999995" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="155,42"
+          Id="Package\Poblar informacion\Origen Producto"
+          TopLeft="114.285714285714,197.857142857143" />
+        <NodeLayout
+          Size="159,42"
+          Id="Package\Poblar informacion\Destino Producto"
+          TopLeft="131.642857142857,287.357142857142" />
+        <EdgeLayout
+          Id="Package\Poblar informacion.Paths[OLE DB Source Output3]"
+          TopLeft="191.785714285714,239.857142857143">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="19.3571428571429,47.4999999999995"
+              Start="0,0"
+              End="19.3571428571429,39.9999999999995">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,19.7499999999997" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,19.7499999999997"
+                    Point2="0,23.7499999999997"
+                    Point3="4,23.7499999999997" />
+                  <mssgle:LineSegment
+                    End="15.3571428571429,23.7499999999997" />
+                  <mssgle:CubicBezierSegment
+                    Point1="15.3571428571429,23.7499999999997"
+                    Point2="19.3571428571429,23.7499999999997"
+                    Point3="19.3571428571429,27.7499999999997" />
+                  <mssgle:LineSegment
+                    End="19.3571428571429,39.9999999999995" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <TaskHost
+    design-time-name="Package\Probar Fact Table">
+    <LayoutInfo>
+      <GraphLayout
+        Capacity="16" xmlns="clr-namespace:Microsoft.SqlServer.IntegrationServices.Designer.Model.Serialization;assembly=Microsoft.SqlServer.IntegrationServices.Graph" xmlns:mssgle="clr-namespace:Microsoft.SqlServer.Graph.LayoutEngine;assembly=Microsoft.SqlServer.Graph" xmlns:assembly="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mssgm="clr-namespace:Microsoft.SqlServer.Graph.Model;assembly=Microsoft.SqlServer.Graph">
+        <NodeLayout
+          Size="148,42"
+          Id="Package\Probar Fact Table\Origen Hechos"
+          TopLeft="32,31" />
+        <NodeLayout
+          Size="171,49"
+          Id="Package\Probar Fact Table\OLE DB Destination"
+          TopLeft="383.333333333333,422.222222222222" />
+        <NodeLayout
+          Size="113,42"
+          Id="Package\Probar Fact Table\Lookup"
+          TopLeft="94.4444444444445,118.888888888889" />
+        <EdgeLayout
+          Id="Package\Probar Fact Table.Paths[OLE DB Source Output]"
+          TopLeft="106,73">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="44.9444444444445,45.8888888888889"
+              Start="0,0"
+              End="44.9444444444445,38.3888888888889">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,18.9444444444444" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,18.9444444444444"
+                    Point2="0,22.9444444444444"
+                    Point3="4,22.9444444444444" />
+                  <mssgle:LineSegment
+                    End="40.9444444444445,22.9444444444444" />
+                  <mssgle:CubicBezierSegment
+                    Point1="40.9444444444445,22.9444444444444"
+                    Point2="44.9444444444445,22.9444444444444"
+                    Point3="44.9444444444445,26.9444444444444" />
+                  <mssgle:LineSegment
+                    End="44.9444444444445,38.3888888888889" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <EdgeLabelCollection />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="122,42"
+          Id="Package\Probar Fact Table\Lookup 1"
+          TopLeft="111.111111111111,262.222222222222" />
+        <EdgeLayout
+          Id="Package\Probar Fact Table.Paths[Lookup Match Output]"
+          TopLeft="150.944444444444,160.888888888889">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="21.1666666666666,101.333333333333"
+              Start="0,0"
+              End="21.1666666666666,93.8333333333333">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,46.6666666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="0,46.6666666666667"
+                    Point2="0,50.6666666666667"
+                    Point3="4,50.6666666666667" />
+                  <mssgle:LineSegment
+                    End="17.1666666666666,50.6666666666667" />
+                  <mssgle:CubicBezierSegment
+                    Point1="17.1666666666666,50.6666666666667"
+                    Point2="21.1666666666666,50.6666666666667"
+                    Point3="21.1666666666666,54.6666666666667" />
+                  <mssgle:LineSegment
+                    End="21.1666666666666,93.8333333333333" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-37.6080533854167,55.6666666666667,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="122,42"
+          Id="Package\Probar Fact Table\Lookup 2"
+          TopLeft="113.333333333333,334.444444444444" />
+        <EdgeLayout
+          Id="Package\Probar Fact Table.Paths[Lookup Match Output1]"
+          TopLeft="173.222222222222,304.222222222222">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,30.2222222222222"
+              Start="0,0"
+              End="0,22.7222222222222">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,22.7222222222222" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,5.55642361111109,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <NodeLayout
+          Size="122,42"
+          Id="Package\Probar Fact Table\Lookup 3"
+          TopLeft="114.444444444444,417.777777777778" />
+        <EdgeLayout
+          Id="Package\Probar Fact Table.Paths[Lookup Match Output2]"
+          TopLeft="174.888888888889,376.444444444444">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="0,41.3333333333334"
+              Start="0,0"
+              End="0,33.8333333333334">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="0,33.8333333333334" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="-48.19138671875,11.1119791666667,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+        <EdgeLayout
+          Id="Package\Probar Fact Table.Paths[Lookup Match Output3]"
+          TopLeft="236.444444444444,442.75">
+          <EdgeLayout.Curve>
+            <mssgle:Curve
+              StartConnector="{assembly:Null}"
+              EndConnector="146.888888888889,0"
+              Start="0,0"
+              End="139.388888888889,0">
+              <mssgle:Curve.Segments>
+                <mssgle:SegmentCollection
+                  Capacity="5">
+                  <mssgle:LineSegment
+                    End="139.388888888889,0" />
+                </mssgle:SegmentCollection>
+              </mssgle:Curve.Segments>
+            </mssgle:Curve>
+          </EdgeLayout.Curve>
+          <EdgeLayout.Labels>
+            <mssgm:EdgeLabel
+              BoundingBox="21.5030577256945,5,96.3827734375,11.609375"
+              RelativePosition="Any" />
+          </EdgeLayout.Labels>
+        </EdgeLayout>
+      </GraphLayout>
+    </LayoutInfo>
+  </TaskHost>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Origen Tiempo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Destino Tiempo">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Origen Categoria ABC">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Destino Categoria ABC">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Origen Cliente">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Destino Cliente">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Origen Producto">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Poblar informacion\Destino Producto">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Probar Fact Table\Origen Hechos">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Probar Fact Table\OLE DB Destination">
+    <Properties>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q2:string">Table</Value>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Probar Fact Table\Lookup">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_tiempo]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Probar Fact Table\Lookup 1">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_producto]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Probar Fact Table\Lookup 2">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_cliente]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+  <PipelineComponentMetadata
+    design-time-name="Package\Probar Fact Table\Lookup 3">
+    <Properties>
+      <Property>
+        <Name>OverwriteParamsSQLProp</Name>
+        <Value
+          type="q2:boolean">false</Value>
+      </Property>
+      <Property>
+        <Name>UsedTableName</Name>
+        <Value
+          type="q3:string">[dbo].[dim_categoria_abc]</Value>
+      </Property>
+      <Property>
+        <Name>TableInfoObjectType</Name>
+        <Value
+          type="q4:int">0</Value>
+      </Property>
+      <Property>
+        <Name>DataSourceViewID</Name>
+      </Property>
+    </Properties>
+  </PipelineComponentMetadata>
+</Objects>]]></DTS:DesignTimeProperties>
+</DTS:Executable>
